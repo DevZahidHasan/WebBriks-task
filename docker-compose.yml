@@ -18,6 +18,51 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - kanban_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kanban_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/kanban_db?schema=public
+      JWT_SECRET: production-super-secret-jwt-key-2026
+      JWT_EXPIRES_IN: 7d
+    ports:
+      - '4000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kanban_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000/api
+    container_name: kanban_frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+    networks:
+      - kanban_network
 
 volumes:
   postgres_data:
+
+networks:
+  kanban_network:
+    driver: bridge
