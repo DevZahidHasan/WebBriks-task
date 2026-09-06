@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import gsap from 'gsap';
 import { cn } from '../../lib/utils';
+import { MOTION } from '../../lib/motion';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,6 +16,9 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, description, children, className }: ModalProps) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -24,6 +29,20 @@ export function Modal({ isOpen, onClose, title, description, children, className
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+
+      // GSAP Spring animation on mount
+      if (overlayRef.current && modalRef.current) {
+        gsap.fromTo(
+          overlayRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: MOTION.duration.fast, ease: MOTION.ease.out },
+        );
+        gsap.fromTo(
+          modalRef.current,
+          { scale: 0.94, y: 12, opacity: 0 },
+          { scale: 1, y: 0, opacity: 1, duration: 0.35, ease: MOTION.ease.spring },
+        );
+      }
     }
 
     return () => {
@@ -37,12 +56,14 @@ export function Modal({ isOpen, onClose, title, description, children, className
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        ref={overlayRef}
+        className="fixed inset-0 bg-black/75 backdrop-blur-sm"
         onClick={onClose}
       />
       <div
+        ref={modalRef}
         className={cn(
-          'relative w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-lg shadow-2xl p-6 z-10 transition-all duration-200 transform scale-100 opacity-100',
+          'relative w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl p-6 z-10',
           className,
         )}
       >
@@ -53,7 +74,7 @@ export function Modal({ isOpen, onClose, title, description, children, className
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-500 hover:text-zinc-300 p-1 rounded-md hover:bg-zinc-800 transition-colors"
+            className="text-zinc-500 hover:text-zinc-300 p-1.5 rounded-md hover:bg-zinc-800 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Calendar, CheckCircle2, RotateCcw, ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 
@@ -14,6 +15,7 @@ interface PreviewTask {
 }
 
 export function InteractivePreview() {
+  const containerRef = useRef<HTMLElement>(null);
   const [inProgressTasks, setInProgressTasks] = useState<PreviewTask[]>([
     {
       id: 'task-1',
@@ -43,12 +45,34 @@ export function InteractivePreview() {
 
   const [isMoved, setIsMoved] = useState(false);
 
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.preview-board-shell', {
+        opacity: 0,
+        y: 20,
+        duration: 0.7,
+        ease: 'power2.out',
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const handleMoveTask = () => {
     if (inProgressTasks.length === 0) return;
     const [taskToMove, ...remaining] = inProgressTasks;
     setInProgressTasks(remaining);
     setDoneTasks((prev) => [taskToMove, ...prev]);
     setIsMoved(true);
+
+    // Subtle GSAP bounce on target list
+    setTimeout(() => {
+      gsap.fromTo(
+        '.preview-done-card:first-child',
+        { opacity: 0, scale: 0.96, y: -8 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: 'back.out(1.5)' }
+      );
+    }, 10);
   };
 
   const handleReset = () => {
@@ -81,8 +105,8 @@ export function InteractivePreview() {
   };
 
   return (
-    <section className="py-8 px-6 max-w-5xl mx-auto w-full">
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-xl">
+    <section ref={containerRef} className="py-8 px-6 max-w-5xl mx-auto w-full">
+      <div className="preview-board-shell rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-xl">
         {/* Top Control Bar */}
         <div className="flex items-center justify-between pb-5 mb-5 border-b border-zinc-800/80">
           <div>
@@ -165,7 +189,7 @@ export function InteractivePreview() {
               {doneTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-md bg-zinc-900 border border-zinc-800 flex flex-col gap-2 transition-all duration-200 shadow-sm"
+                  className="preview-done-card p-3.5 rounded-md bg-zinc-900 border border-zinc-800 flex flex-col gap-2 transition-all duration-200 shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <Badge priority={task.priority} />

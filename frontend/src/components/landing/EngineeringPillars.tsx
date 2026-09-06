@@ -1,9 +1,26 @@
 'use client';
 
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { Move, Users, CheckSquare, Zap } from 'lucide-react';
+import gsap from 'gsap';
 
 export function EngineeringPillars() {
+  const containerRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.pillar-card', {
+        opacity: 0,
+        y: 16,
+        duration: 0.5,
+        stagger: 0.08,
+        ease: 'power2.out',
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const features = [
     {
       icon: Move,
@@ -32,7 +49,7 @@ export function EngineeringPillars() {
   ];
 
   return (
-    <section className="py-16 px-6 max-w-5xl mx-auto w-full">
+    <section ref={containerRef} className="py-16 px-6 max-w-5xl mx-auto w-full">
       <div className="mb-10 text-center sm:text-left">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
           Everything your team needs to deliver on time.
@@ -48,7 +65,7 @@ export function EngineeringPillars() {
           return (
             <div
               key={feature.title}
-              className="p-6 rounded-lg bg-zinc-900/40 border border-zinc-850 hover:border-zinc-800 transition-colors"
+              className="pillar-card p-6 rounded-lg bg-zinc-900/40 border border-zinc-850 hover:border-zinc-800 transition-colors"
             >
               <div className="w-8 h-8 rounded-md bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300 mb-3">
                 <Icon className="w-4 h-4" />

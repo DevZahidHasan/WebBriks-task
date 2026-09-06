@@ -13,6 +13,8 @@ import { Badge } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
 import { Input } from '../../components/ui/Input';
 import { Skeleton } from '../../components/ui/Skeleton';
+import gsap from 'gsap';
+import { MOTION } from '../../lib/motion';
 
 export default function BoardsDashboardPage() {
   const { user, isLoading: authLoading, logout } = useAuth();
@@ -48,6 +50,16 @@ export default function BoardsDashboardPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!isLoading && boards.length > 0) {
+      gsap.fromTo(
+        '.board-card',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: MOTION.duration.normal, stagger: 0.07, ease: MOTION.ease.out },
+      );
+    }
+  }, [isLoading, boards.length]);
 
   const handleCreateBoard = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,8 +137,7 @@ export default function BoardsDashboardPage() {
       <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 flex-1 flex flex-col gap-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-mono">PROJECT BOARDS</span>
-            <h1 className="text-2xl font-semibold text-zinc-100 tracking-tight mt-0.5">Your Active Workspaces</h1>
+            <h1 className="text-2xl font-semibold text-zinc-100 tracking-tight">Workspaces</h1>
             <p className="text-xs text-zinc-400 mt-1">Manage project workflow columns, cards, and team permissions.</p>
           </div>
           <Button onClick={() => setIsCreateOpen(true)} className="self-start sm:self-auto">
@@ -162,7 +173,7 @@ export default function BoardsDashboardPage() {
               <Link
                 key={board.id}
                 href={`/boards/${board.id}`}
-                className="group relative flex flex-col justify-between p-5 rounded-lg bg-zinc-900/70 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700/80 transition-all duration-150 shadow-sm"
+                className="board-card group relative flex flex-col justify-between p-5 rounded-lg bg-zinc-900/70 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700/80 transition-all duration-150 shadow-sm"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">

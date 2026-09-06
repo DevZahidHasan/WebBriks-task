@@ -25,7 +25,7 @@ export function KanbanColumn({
   canEdit,
 }: KanbanColumnProps) {
   return (
-    <div className="flex flex-col w-80 shrink-0 bg-zinc-900/50 border border-zinc-800/80 rounded-xl overflow-hidden max-h-[calc(100vh-12rem)] shadow-sm">
+    <div className="kanban-column flex flex-col w-80 shrink-0 bg-zinc-900/50 border border-zinc-800/80 rounded-xl overflow-hidden max-h-[calc(100vh-12rem)] shadow-sm">
       {/* Column Header */}
       <div className="flex items-center justify-between px-3.5 py-3 border-b border-zinc-800/80 bg-zinc-900/70">
         <div className="flex items-center gap-2">

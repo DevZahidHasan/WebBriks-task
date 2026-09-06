@@ -15,6 +15,8 @@ import { Modal } from '../../../components/ui/Modal';
 import { Input } from '../../../components/ui/Input';
 import { Button } from '../../../components/ui/Button';
 import { Skeleton } from '../../../components/ui/Skeleton';
+import gsap from 'gsap';
+import { MOTION } from '../../../lib/motion';
 
 export default function BoardViewPage() {
   const { id: boardId } = useParams<{ id: string }>();
@@ -62,6 +64,23 @@ export default function BoardViewPage() {
       fetchBoard();
     }
   }, [user, authLoading, boardId, fetchBoard, router]);
+
+  // Animate Kanban columns into view with a smooth staggered cascade
+  useEffect(() => {
+    if (!isLoading && columns.length > 0) {
+      gsap.fromTo(
+        '.kanban-column',
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: MOTION.duration.normal,
+          stagger: 0.06,
+          ease: MOTION.ease.out,
+        }
+      );
+    }
+  }, [isLoading, columns.length]);
 
   // Determine current user's role on this board
   const currentUserMembership = board?.members?.find((m) => m.user.id === user?.id);
