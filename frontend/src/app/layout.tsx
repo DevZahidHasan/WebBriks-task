@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '../context/AuthContext';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'WebBricks-task | Collaborative Kanban Board',
