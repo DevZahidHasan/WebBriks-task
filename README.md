@@ -1,4 +1,4 @@
-# Mini Kanban Board
+# WebBricks-task
 
 A production-grade, collaborative Kanban board and workflow management platform built with **NestJS**, **Prisma**, **PostgreSQL**, and **Next.js 14** (App Router).
 

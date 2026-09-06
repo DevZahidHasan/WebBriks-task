@@ -100,7 +100,7 @@ export default function BoardsDashboardPage() {
             <div className="w-8 h-8 rounded-md bg-zinc-800 border border-zinc-700/60 flex items-center justify-center text-zinc-200">
               <FolderKanban className="w-4 h-4 text-zinc-300" />
             </div>
-            <span className="font-semibold text-sm tracking-tight text-zinc-100">Mini Kanban</span>
+            <span className="font-semibold text-sm tracking-tight text-zinc-100">WebBricks-task</span>
             <span className="text-zinc-600 text-xs font-mono">/</span>
             <span className="text-zinc-400 text-xs">Workspaces</span>
           </div>

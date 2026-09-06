@@ -1,73 +1,64 @@
 'use client';
 
 import React from 'react';
-import { Cpu, Lock, RefreshCw, Layers } from 'lucide-react';
+import { Move, Users, CheckSquare, Zap } from 'lucide-react';
 
 export function EngineeringPillars() {
-  const pillars = [
+  const features = [
     {
-      icon: Cpu,
-      tag: '01 / CONCURRENCY CONTROL',
-      title: 'ACID Shifting vs Fractional Exhaustion',
+      icon: Move,
+      title: 'Tactile Drag-and-Drop',
       description:
-        'Rather than halving floating-point numbers which collapses after 53 moves, our reordering engine executes atomic PostgreSQL updateMany queries with contiguous integer indices.',
+        'Smooth card movement across columns with real-time positional calculation and instant visual feedback.',
     },
     {
-      icon: Lock,
-      tag: '02 / MULTI-TENANT ACCESS',
-      title: 'Anti-IDOR Parent Guard Resolution',
+      icon: Users,
+      title: 'Collaborative Workspaces',
       description:
-        'Every mutation route checks parent board membership across nested /columns and /tasks parameters, guaranteeing attackers cannot tamper with boards they do not belong to.',
+        'Invite team members by email with specific roles—Owners can manage everything, Members can update, and Viewers can monitor.',
     },
     {
-      icon: RefreshCw,
-      tag: '03 / TACTILE RESILIENCY',
-      title: 'Optimistic UI with Instant Rollback',
+      icon: CheckSquare,
+      title: 'Contiguous Task Indexing',
       description:
-        'Client-side state renders moves instantly with zero latency. If the network drops or the server rejects, state rolls back to the previous snapshot with a Sonner alert.',
+        'Deleting or moving tasks automatically shifts surrounding positions so columns never suffer from gaps or order divergence.',
     },
     {
-      icon: Layers,
-      tag: '04 / PRODUCTION STANDARDS',
-      title: '100% Strict TypeScript Architecture',
+      icon: Zap,
+      title: 'Modern Full-Stack Performance',
       description:
-        'Strict type safety with zero any across both NestJS backend and Next.js App Router, complete with normalized AppError formats and class-validator DTOs.',
+        'Engineered with Next.js App Router, NestJS modular backend, and PostgreSQL for reliable speed and scalability.',
     },
   ];
 
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto w-full">
-      <div className="mb-12">
-        <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-500">
-          SYSTEM CAPABILITIES
-        </span>
-        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-100 mt-1">
-          Built for resilience under real-world concurrency.
+    <section className="py-16 px-6 max-w-5xl mx-auto w-full">
+      <div className="mb-10 text-center sm:text-left">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
+          Everything your team needs to deliver on time.
         </h2>
+        <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+          Designed with simplicity and precision for high-performing development teams.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {pillars.map((pillar) => {
-          const Icon = pillar.icon;
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {features.map((feature) => {
+          const Icon = feature.icon;
           return (
             <div
-              key={pillar.title}
-              className="p-6 sm:p-8 rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition-colors flex flex-col justify-between"
+              key={feature.title}
+              className="p-6 rounded-lg bg-zinc-900/40 border border-zinc-850 hover:border-zinc-800 transition-colors"
             >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] font-mono text-zinc-500">{pillar.tag}</span>
-                  <div className="w-8 h-8 rounded-md bg-zinc-800 border border-zinc-700/60 flex items-center justify-center text-zinc-300">
-                    <Icon className="w-4 h-4" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold text-zinc-100 tracking-tight mb-2">
-                  {pillar.title}
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  {pillar.description}
-                </p>
+              <div className="w-8 h-8 rounded-md bg-zinc-850 border border-zinc-800 flex items-center justify-center text-zinc-300 mb-3">
+                <Icon className="w-4 h-4" />
               </div>
+              <h3 className="text-sm font-semibold text-zinc-200 tracking-tight mb-1.5">
+                {feature.title}
+              </h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           );
         })}

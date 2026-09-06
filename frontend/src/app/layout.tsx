@@ -7,7 +7,7 @@ import { AuthProvider } from '../context/AuthContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Mini Kanban | Collaborative Task Management',
+  title: 'WebBricks-task | Collaborative Kanban Board',
   description: 'Production-grade collaborative Kanban board with drag-and-drop workflow management.',
 };
 

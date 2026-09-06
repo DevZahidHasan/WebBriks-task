@@ -43,9 +43,8 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 sm:p-6">
       <div className="w-full max-w-sm flex flex-col gap-6">
         <div className="flex flex-col gap-1.5 text-center sm:text-left">
-          <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-mono">NEW ACCOUNT</span>
           <h1 className="text-2xl font-semibold text-zinc-100 tracking-tight">Create your workspace</h1>
-          <p className="text-xs text-zinc-400">Join Mini Kanban to organize teams and workflows</p>
+          <p className="text-xs text-zinc-400">Join WebBricks-task to organize teams and workflows</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-zinc-900/60 p-6 rounded-lg border border-zinc-800 shadow-xl">

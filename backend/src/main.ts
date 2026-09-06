@@ -30,7 +30,7 @@ async function bootstrap(): Promise<void> {
 
   const port = process.env.PORT || 4000;
   await app.listen(port);
-  logger.log(`Mini Kanban API running on: http://localhost:${port}/api`);
+  logger.log(`WebBricks-task API running on: http://localhost:${port}/api`);
 }
 
 void bootstrap();

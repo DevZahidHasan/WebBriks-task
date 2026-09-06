@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Play, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Calendar, CheckCircle2, RotateCcw, ArrowRight } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 
@@ -17,14 +17,14 @@ export function InteractivePreview() {
   const [inProgressTasks, setInProgressTasks] = useState<PreviewTask[]>([
     {
       id: 'task-1',
-      title: 'Implement atomic $transaction reordering engine',
+      title: 'Setup automated CI/CD pipeline for cloud deployment',
       priority: 'URGENT',
       dueDate: 'Sep 08',
       assignee: 'A',
     },
     {
       id: 'task-2',
-      title: 'Audit multi-tenant IDOR access guards across routes',
+      title: 'Review team access permissions and invite settings',
       priority: 'HIGH',
       dueDate: 'Sep 10',
       assignee: 'S',
@@ -34,46 +34,35 @@ export function InteractivePreview() {
   const [doneTasks, setDoneTasks] = useState<PreviewTask[]>([
     {
       id: 'task-3',
-      title: 'Design relational schema with compound B-Tree indexes',
+      title: 'Design relational schema with PostgreSQL',
       priority: 'MEDIUM',
       dueDate: 'Sep 04',
       assignee: 'A',
     },
   ]);
 
-  const [lastEvent, setLastEvent] = useState<string>(
-    'Ready. Click "Simulate Atomic Move" to see the transaction engine in action.',
-  );
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isMoved, setIsMoved] = useState(false);
 
-  const handleSimulateMove = () => {
+  const handleMoveTask = () => {
     if (inProgressTasks.length === 0) return;
-
-    setIsAnimating(true);
-    const movingTask = inProgressTasks[0];
-
-    setLastEvent('DISPATCHING: PATCH /api/tasks/move { targetColumnId: "done", position: 0 }');
-
-    setTimeout(() => {
-      setInProgressTasks((prev) => prev.slice(1));
-      setDoneTasks((prev) => [movingTask, ...prev]);
-      setLastEvent('ACID TRANSACTION COMMITTED in 1.4ms (PostgreSQL integer shifting applied)');
-      setIsAnimating(false);
-    }, 450);
+    const [taskToMove, ...remaining] = inProgressTasks;
+    setInProgressTasks(remaining);
+    setDoneTasks((prev) => [taskToMove, ...prev]);
+    setIsMoved(true);
   };
 
   const handleReset = () => {
     setInProgressTasks([
       {
         id: 'task-1',
-        title: 'Implement atomic $transaction reordering engine',
+        title: 'Setup automated CI/CD pipeline for cloud deployment',
         priority: 'URGENT',
         dueDate: 'Sep 08',
         assignee: 'A',
       },
       {
         id: 'task-2',
-        title: 'Audit multi-tenant IDOR access guards across routes',
+        title: 'Review team access permissions and invite settings',
         priority: 'HIGH',
         dueDate: 'Sep 10',
         assignee: 'S',
@@ -82,52 +71,51 @@ export function InteractivePreview() {
     setDoneTasks([
       {
         id: 'task-3',
-        title: 'Design relational schema with compound B-Tree indexes',
+        title: 'Design relational schema with PostgreSQL',
         priority: 'MEDIUM',
         dueDate: 'Sep 04',
         assignee: 'A',
       },
     ]);
-    setLastEvent('Simulation reset to initial state.');
+    setIsMoved(false);
   };
 
   return (
-    <section className="py-16 px-6 max-w-7xl mx-auto w-full">
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-6 md:p-8 shadow-2xl overflow-hidden">
-        {/* Header Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
+    <section className="py-8 px-6 max-w-5xl mx-auto w-full">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-xl">
+        {/* Top Control Bar */}
+        <div className="flex items-center justify-between pb-5 mb-5 border-b border-zinc-800/80">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <h3 className="text-sm font-semibold text-zinc-100 font-mono">
-                ENGINEERING DEMO: SPRINT BOARD SIMULATOR
-              </h3>
-            </div>
-            <p className="text-xs text-zinc-400 mt-1">
-              Demonstrating optimistic local state transitions backed by atomic PostgreSQL write locks.
+            <h3 className="text-sm font-semibold text-zinc-100">
+              Interactive Board Preview
+            </h3>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Experience seamless card transitions between sprint stages.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              onClick={handleSimulateMove}
-              disabled={isAnimating || inProgressTasks.length === 0}
+              onClick={handleMoveTask}
+              disabled={inProgressTasks.length === 0}
             >
-              <Play className="w-3 h-3" />
-              Simulate Atomic Move
+              <span>Move Card</span>
+              <ArrowRight className="w-3 h-3" />
             </Button>
-            <Button size="sm" variant="ghost" onClick={handleReset} title="Reset">
-              <RotateCcw className="w-3.5 h-3.5" />
-            </Button>
+            {isMoved && (
+              <Button size="sm" variant="ghost" onClick={handleReset} title="Reset">
+                <RotateCcw className="w-3.5 h-3.5" />
+              </Button>
+            )}
           </div>
         </div>
 
-        {/* Kanban Board Columns View */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+        {/* Board Columns View */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Column 1: IN PROGRESS */}
-          <div className="flex flex-col gap-3 p-4 rounded-lg bg-zinc-950/60 border border-zinc-800/80">
-            <div className="flex items-center justify-between text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+          <div className="flex flex-col gap-3 p-4 rounded-lg bg-zinc-950/70 border border-zinc-800/80">
+            <div className="flex items-center justify-between text-xs font-semibold text-zinc-300">
               <span>In Progress</span>
               <span className="text-[11px] font-mono text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded-full border border-zinc-800">
                 {inProgressTasks.length}
@@ -138,7 +126,7 @@ export function InteractivePreview() {
               {inProgressTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-md bg-zinc-900 border border-zinc-800 flex flex-col gap-2 transition-all duration-200"
+                  className="p-3.5 rounded-md bg-zinc-900 border border-zinc-800 hover:border-zinc-700 flex flex-col gap-2 transition-all duration-200 shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <Badge priority={task.priority} />
@@ -157,17 +145,17 @@ export function InteractivePreview() {
               ))}
 
               {inProgressTasks.length === 0 && (
-                <div className="flex-1 flex items-center justify-center text-xs text-zinc-600 border border-dashed border-zinc-850 rounded">
-                  All sprint tasks transferred!
+                <div className="flex-1 flex items-center justify-center text-xs text-zinc-500 border border-dashed border-zinc-800 rounded">
+                  No cards in this column
                 </div>
               )}
             </div>
           </div>
 
           {/* Column 2: DONE */}
-          <div className="flex flex-col gap-3 p-4 rounded-lg bg-zinc-950/60 border border-zinc-800/80">
-            <div className="flex items-center justify-between text-xs font-semibold text-zinc-300 uppercase tracking-wider">
-              <span>Completed (Done)</span>
+          <div className="flex flex-col gap-3 p-4 rounded-lg bg-zinc-950/70 border border-zinc-800/80">
+            <div className="flex items-center justify-between text-xs font-semibold text-zinc-300">
+              <span>Completed</span>
               <span className="text-[11px] font-mono text-zinc-500 bg-zinc-900 px-2 py-0.5 rounded-full border border-zinc-800">
                 {doneTasks.length}
               </span>
@@ -177,7 +165,7 @@ export function InteractivePreview() {
               {doneTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-md bg-zinc-900 border border-zinc-800 flex flex-col gap-2 transition-all duration-200"
+                  className="p-3.5 rounded-md bg-zinc-900 border border-zinc-800 flex flex-col gap-2 transition-all duration-200 shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <Badge priority={task.priority} />
@@ -197,12 +185,6 @@ export function InteractivePreview() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Live Transaction Terminal Footer */}
-        <div className="mt-6 p-3 rounded-md bg-black/80 border border-zinc-800/80 flex items-center gap-2 font-mono text-[11px]">
-          <span className="text-emerald-400">&gt;</span>
-          <span className="text-zinc-400 truncate">{lastEvent}</span>
         </div>
       </div>
     </section>

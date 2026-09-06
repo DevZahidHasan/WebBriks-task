@@ -1,7 +1,7 @@
 {
   "name": "mini-kanban-backend",
   "version": "1.0.0",
-  "description": "Production-grade NestJS REST API for Mini Kanban Board",
+  "description": "Production-grade NestJS REST API for WebBricks-task",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

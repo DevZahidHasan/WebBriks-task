@@ -42,8 +42,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-4 sm:p-6">
       <div className="w-full max-w-sm flex flex-col gap-6">
         <div className="flex flex-col gap-1.5 text-center sm:text-left">
-          <span className="text-[11px] uppercase tracking-widest text-zinc-500 font-mono">WORKSPACE ACCESS</span>
-          <h1 className="text-2xl font-semibold text-zinc-100 tracking-tight">Sign in to Mini Kanban</h1>
+          <h1 className="text-2xl font-semibold text-zinc-100 tracking-tight">Sign in to WebBricks-task</h1>
           <p className="text-xs text-zinc-400">Collaborative board & workflow management platform</p>
         </div>
 
