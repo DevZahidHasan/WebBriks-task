@@ -1,30 +1,22 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
-import { Skeleton } from '../components/ui/Skeleton';
+import React from 'react';
+import { Navbar } from '../components/landing/Navbar';
+import { HeroSection } from '../components/landing/HeroSection';
+import { InteractivePreview } from '../components/landing/InteractivePreview';
+import { EngineeringPillars } from '../components/landing/EngineeringPillars';
+import { Footer } from '../components/landing/Footer';
 
-export default function HomePage() {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        router.push('/boards');
-      } else {
-        router.push('/login');
-      }
-    }
-  }, [user, isLoading, router]);
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-2 border-zinc-700 border-t-zinc-200 rounded-full animate-spin" />
-        <p className="text-xs text-zinc-500 font-mono">LOADING WORKSPACE...</p>
-      </div>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white">
+      <Navbar />
+      <main className="flex-1">
+        <HeroSection />
+        <InteractivePreview />
+        <EngineeringPillars />
+      </main>
+      <Footer />
     </div>
   );
 }
